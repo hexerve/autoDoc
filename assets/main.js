@@ -13,8 +13,19 @@ $(function () {
     $(document).on('click', '#submit', function () {
         let title = $('#macro').val();
         let comment = $('#macroDesc').val();
-        if (title === "" || comment === "")
+        if (title === "" || comment === ""){
+            $('#msg').append(
+                '<div class="alert alert-danger alert-dismissible fade show">' +
+                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                '<strong>Oops!</strong> Incomplete credentials.' +
+                '</div>'
+            );
+
+            setTimeout(function(){
+                $('.alert').hide(500);
+            },1000);
             return;
+        }
         let data = {
             macro: {
                 'title': title,

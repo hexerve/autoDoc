@@ -1,3 +1,11 @@
 .form-group {
     margin-bottom: 2% !important;
 }
+
+.alert {
+    padding: 4px 12 !important;
+}
+
+.alert-dismissible .close {
+    padding: 2px !important;
+}

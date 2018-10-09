@@ -1,18 +1,29 @@
 <html>
+
 <head>
   <meta charset="utf-8">
-  <!-- http://garden.zendesk.com -->
-  <link rel="stylesheet" href="https://assets.zendesk.com/apps/sdk-assets/css/2/zendesk_garden.css" type="text/css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
+
 <body>
-  <h2 class="u-gamma">Hello, World!</h2>
-  <!-- https://github.com/zendesk/zendesk_app_framework_sdk -->
-  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
-  <script>
-    // Initialise the Zendesk JavaScript API client
-    // https://developer.zendesk.com/apps/docs/apps-v2
-    var client = ZAFClient.init();
-    client.invoke('resize', { width: '100%', height: '200px' });
-  </script>
+  <div class="container pt-1">
+    <form>
+      <div class="form-group ">
+        <input type="text" class="form-control form-control-sm" id="macro" placeholder="Macro Name">
+      </div>
+      <div class="form-group">
+        <textarea class="form-control form-control-sm" rows="2" id="macroDesc" placeholder="Macro Body"></textarea>
+      </div>
+      <button type="button" class="btn btn-dark float-right btn-sm" id="Submit">Submit</button>
+    </form>
+  </div>
+
+  <script type="text/javascript" src="./main.js"></script>
 </body>
+
 </html>

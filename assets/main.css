@@ -9,3 +9,47 @@
 .alert-dismissible .close {
     padding: 2px !important;
 }
+
+/* alert page */
+
+.card-header {
+    cursor: pointer;
+    margin: 0 !important;
+}
+
+.copy-btn {
+    color: #818a91;
+    background-color: transparent;
+    border: none;
+    padding: 0rem .3rem;
+    font-size: 75%;
+}
+
+.copy-link {
+    font-size: 100%;
+    transform: rotate(-30deg);
+    -webkit-transform: rotate(-30deg);
+    -moz-transform: rotate(-30deg);
+    -o-transform: rotate(-30deg);
+    padding: 0 !important;
+}
+
+.copy-btn:hover {
+    color: #027de7;
+}
+
+.copy-btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.copy-btn:active {
+    font-size: 85%;
+    color: #027de7;
+    transition-timing-function: ease-in-out;
+    -webkit-transition-timing-function: ease-in-out;
+}
+
+.copy-link:active {
+    font-size: 110%;
+}

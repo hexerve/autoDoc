@@ -1,3 +1,4 @@
+var srcType = 'all';
 $(function () {
     //https://developerblog.zendesk.com/making-modals-work-in-zaf-v2-251b7c940e58
     
@@ -23,4 +24,35 @@ $(function () {
     }
 
     //actual modal functionality
+
+    $(document).on('click', '#src-all', function () {
+        if (srcType === 'all') {
+
+        } else {
+            $('#src-' + srcType).addClass('btn-secondary').removeClass('btn-dark');
+            $('#src-all').addClass('btn-dark').removeClass('btn-secondary');
+            srcType = 'all';
+        }
+    });
+
+    $(document).on('click', '#src-fav', function () {
+        if (srcType === 'fav') {
+
+        } else {
+            $('#src-' + srcType).addClass('btn-secondary').removeClass('btn-dark');
+            $('#src-fav').addClass('btn-dark').removeClass('btn-secondary');
+            srcType = 'fav';
+        }
+    });
+
+    $(document).on('click', '#src-my', function () {
+        if (srcType === 'my') {
+
+        } else {
+            $('#src-' + srcType).addClass('btn-secondary').removeClass('btn-dark');
+            $('#src-my').addClass('btn-dark').removeClass('btn-secondary');
+            srcType = 'my';
+        }
+    });
+
 });

@@ -9,13 +9,13 @@ $(function () {
     client.on('app.registered', init);
 
     function init(){
-      client.context().then(createModal);
+    //   client.context().then(createModal);
     };
 
     createModal = function (context) {
         client.invoke('instances.create', {
             location: 'modal',
-            url: 'assets/modals.html#parent_guid=' + context.instanceGuid
+            url: 'assets/modals.html#parent_guid=' + context.instanceGuid,
         }).then(function (modalContext) {
             // The modal is on screen now
             var modalClient = client.instance(modalContext['instances.create'][0].instanceGuid);
@@ -79,5 +79,9 @@ $(function () {
                 }, 1000);
             });
 
+    });
+
+    $(document).on('click', '#open', function(){
+        client.context().then(createModal);
     });
 });

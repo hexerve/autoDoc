@@ -1,9 +1,30 @@
+var createModal;
 $(function () {
     var client = ZAFClient.init();
     client.invoke('resize', {
         width: '100%',
         height: '100%'
     });
+
+    client.on('app.registered', init);
+
+    function init(){
+      client.context().then(createModal);
+    };
+
+    createModal = function (context) {
+        client.invoke('instances.create', {
+            location: 'modal',
+            url: 'assets/modals.html#parent_guid=' + context.instanceGuid
+        }).then(function (modalContext) {
+            // The modal is on screen now
+            var modalClient = client.instance(modalContext['instances.create'][0].instanceGuid);
+            modalClient.invoke('resize', { width: '80vw', height: '80vh' });
+            modalClient.on('modal.close', function () {
+                // The modal has been closed
+            });
+        });
+    }
 
     var url = window.location.href;
     url = url.split('=');
@@ -13,7 +34,7 @@ $(function () {
     $(document).on('click', '#submit', function () {
         let title = $('#macro').val();
         let comment = $('#macroDesc').val();
-        if (title === "" || comment === ""){
+        if (title === "" || comment === "") {
             $('#msg').append(
                 '<div class="alert alert-danger alert-dismissible fade show">' +
                 '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
@@ -21,9 +42,9 @@ $(function () {
                 '</div>'
             );
 
-            setTimeout(function(){
+            setTimeout(function () {
                 $('.alert').hide(500);
-            },1000);
+            }, 1000);
             return;
         }
         let data = {
@@ -53,9 +74,9 @@ $(function () {
                     '</div>'
                 );
 
-                setTimeout(function(){
+                setTimeout(function () {
                     $('.alert').hide(500);
-                },1000);
+                }, 1000);
             });
 
     });

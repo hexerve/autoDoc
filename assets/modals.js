@@ -1,4 +1,4 @@
-var srcType = 'all';
+var srcType = 'all', pc;
 $(function () {
     //https://developerblog.zendesk.com/making-modals-work-in-zaf-v2-251b7c940e58
     
@@ -53,6 +53,16 @@ $(function () {
             $('#src-my').addClass('btn-dark').removeClass('btn-secondary');
             srcType = 'my';
         }
+    });
+
+    $(document).on('click', '.copy-link', function(e){
+        let link = $('#article_link_' + (e.target.id.split('-')[2])).attr('href');
+        pc.set('comment.text', link);
+    });
+
+    $(document).on('click', '.copy-text', function(e){
+        let body = $('#article_body_' + (e.target.id.split('-')[2])).text();
+        pc.set('comment.text', body);
     });
 
 });

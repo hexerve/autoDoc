@@ -53,3 +53,7 @@
 .copy-link:active {
     font-size: 110%;
 }
+
+.article-link {
+    display: none;
+}

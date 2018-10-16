@@ -135,7 +135,7 @@ $(function () {
 
     $(document).on('click', '.copy-text', function (e) {
         let id = e.target.id.split('-')[2];
-        let body = $('#article_body_' + (id)).text();
+        let body = $('#article_body_' + (id)).html();
         let data = '<p>' + body + '</p>';
         pc.get('comment.text').then(function (ticket_data) {
             pc.set('comment.text', ticket_data['comment.text'] + data);

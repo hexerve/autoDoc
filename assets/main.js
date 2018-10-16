@@ -36,7 +36,7 @@ $(function () {
         let comment = $('#macroDesc').val();
         if (title === "" || comment === "") {
             $('#msg').append(
-                '<div class="alert alert-danger alert-dismissible fade show">' +
+                '<div class="alert alert-sm alert-danger alert-dismissible fade show">' +
                 '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
                 '<strong>Oops!</strong> Incomplete credentials.' +
                 '</div>'
@@ -68,7 +68,7 @@ $(function () {
                 $('#macro').val('');
                 $('#macroDesc').val('');
                 $('#msg').append(
-                    '<div class="alert alert-success alert-dismissible fade show">' +
+                    '<div class="alert alert-sm alert-success alert-dismissible fade show">' +
                     '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
                     '<strong>Success!</strong> Macro Created.' +
                     '</div>'

@@ -1,12 +1,17 @@
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .form-group {
     margin-bottom: 2% !important;
 }
 
-.alert {
+.alert-sm {
     padding: 4px 12 !important;
 }
 
-.alert-dismissible .close {
+.alert-sm .close {
     padding: 2px !important;
 }
 
@@ -34,26 +39,19 @@
     padding: 0 !important;
 }
 
-.copy-btn:hover {
+.copy-btn:hover,
+.copy-btn:active,
+.active {
     color: #027de7;
-}
-
-.copy-btn:focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-.copy-btn:active {
-    font-size: 85%;
-    color: #027de7;
-    transition-timing-function: ease-in-out;
-    -webkit-transition-timing-function: ease-in-out;
-}
-
-.copy-link:active {
-    font-size: 110%;
 }
 
 .article-link {
     display: none;
+}
+
+.alert-small-right {
+    position: fixed;
+    right: 1em;
+    top: 0;
+    padding-right: 24px !important;
 }

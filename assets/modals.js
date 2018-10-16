@@ -9,10 +9,6 @@ $(function () {
 
     function init() {
         pc = getParentClient(getGuid(window.location.hash));
-        pc.get('ticket').then(function (ticket_data) {
-            console.log(ticket_data)
-        }); //And like that we now have easy access to the parent ticket modal without guessing which instance the parent is from an array.. Winning!
-
     }
 
     function getGuid(paramString) {
@@ -57,12 +53,19 @@ $(function () {
 
     $(document).on('click', '.copy-link', function(e){
         let link = $('#article_link_' + (e.target.id.split('-')[2])).attr('href');
-        pc.set('comment.text', link);
+        let heading = $('#article_' + (e.target.id.split('-')[2])).text();
+        let data = '<p><a href="' + link + '">' + heading + '</a></p>';
+        pc.get('comment.text').then(function (ticket_data) {
+            pc.set('comment.text', ticket_data['comment.text'] + data);
+        }); 
     });
 
     $(document).on('click', '.copy-text', function(e){
         let body = $('#article_body_' + (e.target.id.split('-')[2])).text();
-        pc.set('comment.text', body);
+        let data = '<p>' + body + '</p>';
+        pc.get('comment.text').then(function (ticket_data) {
+            pc.set('comment.text', ticket_data['comment.text'] + data);
+        });
     });
 
 });

@@ -1,5 +1,15 @@
 var srcType = 'all',
     pc;
+var url = window.location.href;
+url = url.split('=');
+url = url[1].split('&');
+var base_url = decodeURIComponent(url[0]);
+var getArticles;
+
+var typingTimer;
+var doneTyping;
+var doneTypingInterval = 300;
+
 $(function () {
     //https://developerblog.zendesk.com/making-modals-work-in-zaf-v2-251b7c940e58
 
@@ -21,6 +31,63 @@ $(function () {
     }
 
     //actual modal functionality
+
+    getArticles = function (data) {
+        var options = {
+            url: base_url + "/api/v2/help_center/articles/search.json?query=" + data,
+            type: 'GET',
+            contentType: "application/json",
+            cors: true
+        };
+        pc.request(options).then(
+            function (response) {
+                console.log(response);
+                $('#accordion').empty();
+                for (let i = 0; i < response.count; i++) {
+                    let j = i + 1;
+
+                    let url = response.results["0"].html_url;
+                    let title = response.results[i].title;
+                    let body = response.results[i].body;
+
+                    let article = '<div class="card">' +
+                        '<div class="card-header row">' +
+                        '<div class="col-sm-10">' +
+                        '<div class="collapsed" id="heading' + j + '" data-toggle="collapse" data-target="#collapse' + j +
+                        '" aria-expanded="false" aria-controls="collapse"' + j + '">' +
+                        '<div class="row">' +
+                        '<div class="col-sm-2">#' + j + '</div>' +
+                        '<div class="col-sm-10">' +
+                        '<div class="postHeading" id="article_' + j + '">' + title + '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-sm-2">' +
+                        '<button type="button" class="btn copy-btn copy-link" id="copy-link-' + j + '">&#x1F517;</button>' +
+                        '<div class="float-right">' +
+                        '<button type="button" class="btn copy-btn copy-text" id="copy-txt-' + j + '">Copy</button>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div id="collapse' + j + '" class="collapse" aria-labelledby="heading' + j + '" data-parent="#accordion">' +
+                        '<a class="article-link" id="article_link_' + j + '" id="article_link_' + j + '" href="' + url + '"></a>' +
+                        '<div class="card-body" id="article_body_' + j + '">' +
+                        body +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+                    $('#accordion').append(article);
+                }
+            });
+    };
+
+    doneTyping = function () {
+        let data = $('#search').val();
+        if (data) {
+            getArticles(data);
+        }
+    }
 
     $(document).on('click', '#src-all', function () {
         if (srcType === 'all') {
@@ -60,9 +127,9 @@ $(function () {
         pc.get('comment.text').then(function (ticket_data) {
             pc.set('comment.text', ticket_data['comment.text'] + data);
             $('#copy-link-' + id).removeClass('copy-link').addClass('active').text("Copied!");
-            setTimeout(function(){
+            setTimeout(function () {
                 $('#copy-link-' + id).addClass('copy-link').removeClass('active').html("&#x1F517;");
-            },1000);
+            }, 1000);
         });
     });
 
@@ -73,10 +140,19 @@ $(function () {
         pc.get('comment.text').then(function (ticket_data) {
             pc.set('comment.text', ticket_data['comment.text'] + data);
             $('#copy-txt-' + id).addClass('active').text("Copied!");
-            setTimeout(function(){
+            setTimeout(function () {
                 $('#copy-txt-' + id).removeClass('active').text("Copy");
-            },1000);
+            }, 1000);
         });
+    });
+
+    $(document).on('keyup', '#search', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    $(document).on('keydown', '#search', function () {
+        clearTimeout(typingTimer);
     });
 
 });

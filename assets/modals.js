@@ -52,6 +52,8 @@ $(function () {
                 results = response.articles;
             }
 
+            let data_parent = (type === 'all') ? '"#accordion">' : '"#myAccordion">';
+
             let url = results["0"].html_url;
             let title = results[i].title;
             let body = results[i].body;
@@ -59,26 +61,26 @@ $(function () {
             let article = '<div class="card">' +
                 '<div class="card-header row">' +
                 '<div class="col-sm-10">' +
-                '<div class="collapsed" id="heading' + j + '" data-toggle="collapse" data-target="#collapse' + j +
-                '" aria-expanded="false" aria-controls="collapse"' + j + '">' +
+                '<div class="collapsed" id="' + type + '_heading' + j + '" data-toggle="collapse" data-target="#' + type + '_collapse' + j +
+                '" aria-expanded="false" aria-controls="' + type + '_collapse"' + j + '">' +
                 '<div class="row">' +
                 '<div class="col-sm-2">#' + j + '</div>' +
                 '<div class="col-sm-10">' +
-                '<div class="postHeading" id="article_' + j + '">' + title + '</div>' +
+                '<div class="postHeading" id="' + type + '_article_' + j + '">' + title + '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="col-sm-2">' +
-                '<button type="button" class="btn copy-btn copy-link" id="copy-link-' + j + '">&#x1F517;</button>' +
+                '<button type="button" class="btn copy-btn copy-link" id="' + type + '_copy-link-' + j + '">&#x1F517;</button>' +
                 '<div class="float-right">' +
-                '<button type="button" class="btn copy-btn copy-text" id="copy-txt-' + j + '">Copy</button>' +
+                '<button type="button" class="btn copy-btn copy-text" id="' + type + '_copy-txt-' + j + '">Copy</button>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<div id="collapse' + j + '" class="collapse" aria-labelledby="heading' + j + '" data-parent="#accordion">' +
-                '<a class="article-link" id="article_link_' + j + '" id="article_link_' + j + '" href="' + url + '"></a>' +
-                '<div class="card-body" id="article_body_' + j + '">' +
+                '<div id="' + type + '_collapse' + j + '" class="collapse" aria-labelledby="' + type + '_heading' + j + '" data-parent=' + data_parent +
+                '<a class="article-link" id="' + type + '_article_link_' + j + '" href="' + url + '"></a>' +
+                '<div class="card-body" id="' + type + '_article_body_' + j + '">' +
                 body +
                 '</div>' +
                 '</div>' +
@@ -105,11 +107,11 @@ $(function () {
                     if (type === 'all') {
                         $('#accordion').empty();
                         if (response.count === 0) {
-                            $('#accordion').append('<div> No data found...</div>');
+                            $('#accordion').append('<div class="pl-4"> No data found...</div>');
                         }
                     } else {
                         if (response.count === 0) {
-                            $('#myAccordion').append('<div> No data found...</div>');
+                            $('#myAccordion').append('<div class="pl-4"> No data found...</div>');
                         }
                     }
                 }

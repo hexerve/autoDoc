@@ -15,20 +15,25 @@
     <div class="m-3">
         <form onsubmit="return false">
             <div class="form-group ">
-                <input type="text" class="form-control" id="search" placeholder="&#x1F50D; Search">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-dark btn-block" id="src-all">All</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-secondary btn-block" id="src-my">My Posts</button>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <button type="button" class="btn btn-dark btn-block" id="src-all">All</button>
-                </div>
-                <div class="col-sm-6">
-                    <button type="button" class="btn btn-secondary btn-block" id="src-my">My Posts</button>
-                </div>
+            <div class="form-group ">
+                <input type="text" class="form-control" id="search" placeholder="&#x1F50D; Search">
             </div>
         </form>
 
         <div id="accordion">
-            
+
+        </div>
+        <div id="myAccordion">
+
         </div>
     </div>
 

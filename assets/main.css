@@ -3,6 +3,10 @@
     box-shadow: none !important;
 }
 
+.m-3 {
+    margin-top: 0!important;
+}
+
 .form-group {
     margin-bottom: 2% !important;
 }
@@ -54,4 +58,14 @@
     right: 1em;
     top: 0;
     padding-right: 24px !important;
+}
+
+.hide {
+    display: none;
+}
+
+#search {
+    border-color: #495057;
+    border-radius: 1.25rem;
+    padding-left: 36px;
 }

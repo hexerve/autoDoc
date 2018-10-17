@@ -1,5 +1,5 @@
 var srcType = 'all',
-    pc;
+    pc, currentUser;
 
 var url = window.location.href;
 url = url.split('=');
@@ -14,6 +14,7 @@ var doneTyping;
 var doneTypingInterval = 300;
 
 $(function () {
+    $('#myAccordion').hide();
     //https://developerblog.zendesk.com/making-modals-work-in-zaf-v2-251b7c940e58
 
     // Initialise the Zendesk JavaScript API client
@@ -22,6 +23,11 @@ $(function () {
     client.on('app.registered', init);
 
     function init() {
+        client.get('currentUser').then(function (agent) {
+            currentUser = agent.currentUser;
+            data = base_url + '/api/v2/help_center/users/' + currentUser.id + '/articles.json';
+            getArticles(data, 'my');
+        });
         pc = getParentClient(getGuid(window.location.hash));
     }
 
@@ -35,13 +41,20 @@ $(function () {
 
     //actual modal functionality
 
-    appendArticles = function (response) {
+    appendArticles = function (response, type) {
         for (let i = 0; i < response.count; i++) {
             let j = i + 1;
+            let results;
 
-            let url = response.results["0"].html_url;
-            let title = response.results[i].title;
-            let body = response.results[i].body;
+            if (type === 'all') {
+                results = response.results;
+            } else {
+                results = response.articles;
+            }
+
+            let url = results["0"].html_url;
+            let title = results[i].title;
+            let body = results[i].body;
 
             let article = '<div class="card">' +
                 '<div class="card-header row">' +
@@ -70,11 +83,15 @@ $(function () {
                 '</div>' +
                 '</div>' +
                 '</div>';
-            $('#accordion').append(article);
+            if (type === 'all') {
+                $('#accordion').append(article);
+            } else {
+                $('#myAccordion').append(article);
+            }
         }
-    }
+    };
 
-    getArticles = function (url, isAppend) {
+    getArticles = function (url, type) {
         var options = {
             url: url,
             type: 'GET',
@@ -84,15 +101,21 @@ $(function () {
         pc.request(options).then(
             function (response) {
                 console.log(response);
-                if(response.page === 1){
-                    $('#accordion').empty();
-                    if(response.count === 0){
-                        $('#accordion').append('<div> No data found...</div>');
+                if (response.page === 1) {
+                    if (type === 'all') {
+                        $('#accordion').empty();
+                        if (response.count === 0) {
+                            $('#accordion').append('<div> No data found...</div>');
+                        }
+                    } else {
+                        if (response.count === 0) {
+                            $('#myAccordion').append('<div> No data found...</div>');
+                        }
                     }
                 }
-                appendArticles(response);
-                while(response.next_page){
-                    getArticles(response.next_page, false);
+                appendArticles(response, type);
+                while (response.next_page) {
+                    getArticles(response.next_page, type);
                 }
             });
     };
@@ -100,10 +123,10 @@ $(function () {
     doneTyping = function () {
         let data = $('#search').val();
         if (data) {
-            data = base_url + "/api/v2/help_center/articles/search.json?query=" + data
-            getArticles(data, false);
+            data = base_url + "/api/v2/help_center/articles/search.json?query=" + data;
+            getArticles(data, 'all');
         }
-    }
+    };
 
     $(document).on('click', '#src-all', function () {
         if (srcType === 'all') {
@@ -112,16 +135,11 @@ $(function () {
             $('#src-' + srcType).addClass('btn-secondary').removeClass('btn-dark');
             $('#src-all').addClass('btn-dark').removeClass('btn-secondary');
             srcType = 'all';
-        }
-    });
-
-    $(document).on('click', '#src-fav', function () {
-        if (srcType === 'fav') {
-
-        } else {
-            $('#src-' + srcType).addClass('btn-secondary').removeClass('btn-dark');
-            $('#src-fav').addClass('btn-dark').removeClass('btn-secondary');
-            srcType = 'fav';
+            $('#search').show(300);
+            $('#myAccordion').fadeOut(150);
+            setTimeout(() => {
+                $('#accordion').fadeIn(150);
+            }, 150);
         }
     });
 
@@ -132,6 +150,11 @@ $(function () {
             $('#src-' + srcType).addClass('btn-secondary').removeClass('btn-dark');
             $('#src-my').addClass('btn-dark').removeClass('btn-secondary');
             srcType = 'my';
+            $('#search').hide(200);
+            $('#accordion').fadeOut(200);
+            setTimeout(() => {
+                $('#myAccordion').fadeIn(150);
+            }, 200);
         }
     });
 

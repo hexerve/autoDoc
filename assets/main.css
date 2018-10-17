@@ -34,7 +34,7 @@
     font-size: 75%;
 }
 
-.copy-link {
+.copy-link, .copy-link {
     font-size: 100%;
     transform: rotate(-30deg);
     -webkit-transform: rotate(-30deg);

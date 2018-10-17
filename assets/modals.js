@@ -54,7 +54,8 @@ $(function () {
 
             let data_parent = (type === 'all') ? '"#accordion">' : '"#myAccordion">';
 
-            let url = results["0"].html_url;
+            let id = results[i].id;
+            let url = results[i].html_url;
             let title = results[i].title;
             let body = results[i].body;
 
@@ -64,17 +65,17 @@ $(function () {
                 '<div class="collapsed" id="' + type + '_heading' + j + '" data-toggle="collapse" data-target="#' + type + '_collapse' + j +
                 '" aria-expanded="false" aria-controls="' + type + '_collapse"' + j + '">' +
                 '<div class="row">' +
-                '<div class="col-sm-2">#' + j + '</div>' +
-                '<div class="col-sm-10">' +
+                '<div class="col-sm-3">#' + id + '</div>' +
+                '<div class="col-sm-9">' +
                 '<div class="postHeading" id="' + type + '_article_' + j + '">' + title + '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="col-sm-2">' +
-                '<button type="button" class="btn copy-btn copy-link" id="' + type + '_copy-link-' + j + '">&#x1F517;</button>' +
+                '<button type="button" class="btn copy-btn copy-link ' + type + '-copy-link" id="' + type + '_copy-link-' + j + '">&#x1F517;</button>' +
                 '<div class="float-right">' +
-                '<button type="button" class="btn copy-btn copy-text" id="' + type + '_copy-txt-' + j + '">Copy</button>' +
+                '<button type="button" class="btn copy-btn ' + type + '-copy-text" id="' + type + '_copy-txt-' + j + '">Copy</button>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -160,32 +161,60 @@ $(function () {
         }
     });
 
-    $(document).on('click', '.copy-link', function (e) {
+    $(document).on('click', '.all-copy-link', function (e) {
         let id = e.target.id.split('-')[2];
-        let link = $('#article_link_' + (id)).attr('href');
-        let heading = $('#article_' + (id)).text();
+        let link = $('#all_article_link_' + (id)).attr('href');
+        let heading = $('#all_article_' + (id)).text();
         let data = '<p><a href="' + link + '">' + heading + '</a></p>';
         pc.get('comment.text').then(function (ticket_data) {
             pc.set('comment.text', ticket_data['comment.text'] + data);
-            $('#copy-link-' + id).removeClass('copy-link').addClass('active').text("Copied!");
+            $('#all_copy-link-' + id).removeClass('copy-link').addClass('active').text("Copied!");
             setTimeout(function () {
-                $('#copy-link-' + id).addClass('copy-link').removeClass('active').html("&#x1F517;");
+                $('#all_copy-link-' + id).addClass('copy-link').removeClass('active').html("&#x1F517;");
             }, 1000);
         });
     });
 
-    $(document).on('click', '.copy-text', function (e) {
+    $(document).on('click', '.all-copy-text', function (e) {
         let id = e.target.id.split('-')[2];
-        let body = $('#article_body_' + (id)).html();
+        let body = $('#all_article_body_' + (id)).html();
         let data = '<p>' + body + '</p>';
         pc.get('comment.text').then(function (ticket_data) {
             pc.set('comment.text', ticket_data['comment.text'] + data);
-            $('#copy-txt-' + id).addClass('active').text("Copied!");
+            $('#all_copy-txt-' + id).addClass('active').text("Copied!");
             setTimeout(function () {
-                $('#copy-txt-' + id).removeClass('active').text("Copy");
+                $('#all_copy-txt-' + id).removeClass('active').text("Copy");
             }, 1000);
         });
     });
+
+    $(document).on('click', '.my-copy-link', function (e) {
+        let id = e.target.id.split('-')[2];
+        let link = $('#my_article_link_' + (id)).attr('href');
+        let heading = $('#my_article_' + (id)).text();
+        let data = '<p><a href="' + link + '">' + heading + '</a></p>';
+        pc.get('comment.text').then(function (ticket_data) {
+            pc.set('comment.text', ticket_data['comment.text'] + data);
+            $('#my_copy-link-' + id).removeClass('copy-link').addClass('active').text("Copied!");
+            setTimeout(function () {
+                $('#my_copy-link-' + id).addClass('copy-link').removeClass('active').html("&#x1F517;");
+            }, 1000);
+        });
+    });
+
+    $(document).on('click', '.my-copy-text', function (e) {
+        let id = e.target.id.split('-')[2];
+        let body = $('#my_article_body_' + (id)).html();
+        let data = '<p>' + body + '</p>';
+        pc.get('comment.text').then(function (ticket_data) {
+            pc.set('comment.text', ticket_data['comment.text'] + data);
+            $('#my_copy-txt-' + id).addClass('active').text("Copied!");
+            setTimeout(function () {
+                $('#my_copy-txt-' + id).removeClass('active').text("Copy");
+            }, 1000);
+        });
+    });
+
 
     $(document).on('keyup', '#search', function () {
         clearTimeout(typingTimer);

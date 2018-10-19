@@ -58,6 +58,8 @@
     right: 1em;
     top: 0;
     padding-right: 24px !important;
+    z-index: 1;
+    border: 0px;
 }
 
 .hide {
@@ -68,4 +70,9 @@
     border-color: #495057;
     border-radius: 1.25rem;
     padding-left: 36px;
+}
+
+.selected-text {
+    font-weight: 800;
+    letter-spacing: 2px;
 }

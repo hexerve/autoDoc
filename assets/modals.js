@@ -8,6 +8,8 @@ var base_url = decodeURIComponent(url[0]);
 
 var getArticles;
 var appendArticles;
+var copy;
+var paste;
 
 var typingTimer;
 var doneTyping;
@@ -41,6 +43,69 @@ $(function () {
 
     //actual modal functionality
 
+    paste = function (e) {
+        var clipboardData, pastedData;
+
+        // Stop data actually being pasted
+        e.stopPropagation();
+        e.preventDefault();
+
+        // Get pasted data via clipboard API
+        clipboardData = e.clipboardData || window.clipboardData;
+        pastedData = clipboardData.getData('text/html');
+
+        pc.get('comment.text').then(function (ticket_data) {
+            pc.set('comment.text', ticket_data['comment.text'] + pastedData);
+        });
+
+        $('.alert').remove();
+        setTimeout(() => {
+            $('#modal-msg').append(
+                '<div class="alert alert-small-right alert-sm alert-success alert-dismissible fade show">' +
+                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                'Pasted!' +
+                '</div>'
+            );
+            $('.alert').fadeOut(5000);
+        }, 200);
+
+    };
+
+    copy = function (id, type) {
+        try {
+            let ok = document.execCommand('copy');
+
+            if (ok) {
+                $('#' + type + '_selected-text-' + id).removeClass('selected-text').addClass('active').text("Copied!");
+                setTimeout(function () {
+                    $('#' + type + '_selected-text-' + id).addClass('selected-text').removeClass('active').html("&lobrk; o &robrk;");
+                }, 500);
+            } else {
+                $('.alert').remove();
+                setTimeout(() => {
+                    $('#modal-msg').append(
+                        '<div class="alert alert-small-right alert-sm alert-danger alert-dismissible fade show">' +
+                        '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                        'Unable to copy!' +
+                        '</div>'
+                    );
+                    $('.alert').fadeOut(5000);
+                }, 200);
+            }
+        } catch (err) {
+            $('.alert').remove();
+            setTimeout(() => {
+                $('#modal-msg').append(
+                    '<div class="alert alert-small-right alert-sm alert-danger alert-dismissible fade show">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    'Unsupported Browser!' +
+                    '</div>'
+                );
+                $('.alert').fadeOut(5000);
+            }, 200);
+        }
+    };
+
     appendArticles = function (response, type) {
         for (let i = 0; i < response.count; i++) {
             let j = i + 1;
@@ -61,7 +126,7 @@ $(function () {
 
             let article = '<div class="card">' +
                 '<div class="card-header row">' +
-                '<div class="col-sm-10">' +
+                '<div class="col-sm-9">' +
                 '<div class="collapsed" id="' + type + '_heading' + j + '" data-toggle="collapse" data-target="#' + type + '_collapse' + j +
                 '" aria-expanded="false" aria-controls="' + type + '_collapse"' + j + '">' +
                 '<div class="row">' +
@@ -72,10 +137,17 @@ $(function () {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="col-sm-2">' +
+                '<div class="col-sm-3">' +
+                '<div class="row">' +
+                '<div class="col-sm-4">' +
                 '<button type="button" class="btn copy-btn copy-link ' + type + '-copy-link" id="' + type + '_copy-link-' + j + '">&#x1F517;</button>' +
-                '<div class="float-right">' +
+                '</div>' +
+                '<div class="col-sm-4">' +
+                '<button type="button" class="btn copy-btn selected-text ' + type + '-selected-text" id="' + type + '_selected-text-' + j + '" onclick=copy(' + j + ',"' + type + '");>&lobrk; o &robrk;</button>' +
+                '</div>' +
+                '<div class="col-sm-4">' +
                 '<button type="button" class="btn copy-btn ' + type + '-copy-text" id="' + type + '_copy-txt-' + j + '">Copy</button>' +
+                '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -225,4 +297,5 @@ $(function () {
         clearTimeout(typingTimer);
     });
 
+    document.addEventListener('paste', paste);
 });

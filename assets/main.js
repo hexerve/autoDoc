@@ -1,4 +1,4 @@
-var createModal;
+var createModal, addArticle;
 var prevText = '';
 
 $(function () {
@@ -29,7 +29,24 @@ $(function () {
                 // The modal has been closed
             });
         });
-    }
+    };
+
+    addArticle = function (context) {
+        client.invoke('instances.create', {
+            location: 'modal',
+            url: 'assets/addArticle.html#parent_guid=' + context.instanceGuid,
+        }).then(function (modalContext) {
+            // The modal is on screen now
+            var modalClient = client.instance(modalContext['instances.create'][0].instanceGuid);
+            modalClient.invoke('resize', {
+                width: '60vw',
+                height: '30vh'
+            });
+            modalClient.on('modal.close', function () {
+                // The modal has been closed
+            });
+        });
+    };
 
     var url = window.location.href;
     url = url.split('=');
@@ -152,6 +169,10 @@ $(function () {
 
     $(document).on('click', '#open', function () {
         client.context().then(createModal);
+    });
+
+    $(document).on('click', '#addArticle', function () {
+        client.context().then(addArticle);
     });
 
 });

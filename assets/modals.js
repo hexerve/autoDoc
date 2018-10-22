@@ -10,6 +10,7 @@ var getArticles;
 var appendArticles;
 var copy;
 var paste;
+var copyData;
 
 var typingTimer;
 var doneTyping;
@@ -42,6 +43,35 @@ $(function () {
     }
 
     //actual modal functionality
+
+    copyData = function () {
+        try {
+            let ok = document.execCommand('copy');
+            if (!ok) {
+                $('.alert').remove();
+                setTimeout(() => {
+                    $('#modal-msg').append(
+                        '<div class="alert alert-small-right alert-sm alert-danger alert-dismissible fade show">' +
+                        '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                        'Unable to copy!' +
+                        '</div>'
+                    );
+                    $('.alert').fadeOut(5000);
+                }, 200);
+            }
+        } catch (err) {
+            $('.alert').remove();
+            setTimeout(() => {
+                $('#modal-msg').append(
+                    '<div class="alert alert-small-right alert-sm alert-danger alert-dismissible fade show">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    'Unsupported Browser!' +
+                    '</div>'
+                );
+                $('.alert').fadeOut(5000);
+            }, 200);
+        }
+    };
 
     paste = function (e) {
         var clipboardData, pastedData;
@@ -296,6 +326,8 @@ $(function () {
     $(document).on('keydown', '#search', function () {
         clearTimeout(typingTimer);
     });
+
+    $(document).on('mouseup', '.card-body', copyData)
 
     document.addEventListener('paste', paste);
 });

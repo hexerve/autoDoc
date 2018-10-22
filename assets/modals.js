@@ -1,5 +1,5 @@
 var srcType = 'all',
-    pc, currentUser;
+    pc, currentUser, autoCopy = true;
 
 var url = window.location.href;
 url = url.split('=');
@@ -45,6 +45,9 @@ $(function () {
     //actual modal functionality
 
     copyData = function () {
+        if (!autoCopy) {
+            return;
+        }
         try {
             let ok = document.execCommand('copy');
             if (!ok) {
@@ -317,6 +320,10 @@ $(function () {
         });
     });
 
+    $(document).on('click', '#auto-copy', function () {
+        autoCopy = !autoCopy;
+        autoCopy ? $('#auto-copy').removeClass('gear-inactive') : $('#auto-copy').addClass('gear-inactive')
+    });
 
     $(document).on('keyup', '#search', function () {
         clearTimeout(typingTimer);

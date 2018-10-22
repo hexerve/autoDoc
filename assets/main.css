@@ -4,7 +4,7 @@
 }
 
 .m-3 {
-    margin-top: 0!important;
+    margin-top: 0 !important;
 }
 
 .form-group {
@@ -34,7 +34,8 @@
     font-size: 75%;
 }
 
-.copy-link, .copy-link {
+.copy-link,
+.copy-link {
     font-size: 100%;
     transform: rotate(-30deg);
     -webkit-transform: rotate(-30deg);
@@ -75,4 +76,21 @@
 .selected-text {
     font-weight: 800;
     letter-spacing: 2px;
+}
+
+.gear {
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 0px;
+    font-size: 23px;
+    padding-bottom: 0px;
+}
+
+.gear {
+    background-color: #78A300;
+    color: #ffffff;
+}
+
+.gear-inactive {
+    background-color: #E82A2A;
 }

@@ -23,9 +23,11 @@ $(function () {
         });
 
         getSections(base_url + '/api/v2/help_center/sections.json');
-        
-        $('.loader').addClass('hide');
-        $('#body-container').removeClass('hide');
+
+        setTimeout(function () {
+            $('.loader').addClass('hide');
+            $('#body-container').removeClass('hide');
+        }, 1000);
     }
 
     getSections = function (url) {

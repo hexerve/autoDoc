@@ -18,9 +18,14 @@ $(function () {
             articleBody = data['comment.text'];
         });
 
-
+        pc.get('ticket.subject').then(function (data) {
+            $('#title').val(data['ticket.subject']);
+        });
 
         getSections(base_url + '/api/v2/help_center/sections.json');
+        
+        $('.loader').addClass('hide');
+        $('#body-container').removeClass('hide');
     }
 
     getSections = function (url) {

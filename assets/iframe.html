@@ -22,16 +22,13 @@
   <div class="container pt-1">
     <div id="msg"></div>
     <form>
-      <div class="form-group ">
-        <input type="text" class="form-control form-control-sm" id="macro" placeholder="Macro Name">
-      </div>
-      <div class="form-group">
-        <textarea class="form-control form-control-sm" rows="2" id="macroDesc" placeholder="Macro Body"></textarea>
-      </div>
-      <div class="form-group mt-3">
-        <button type="button" class="btn btn-dark btn-sm" id="open">&#x1F50D;</button>
-        <button type="button" class="btn btn-dark btn-sm" id="addArticle"><b>&#10018;</b></button>
-        <button type="button" class="btn btn-dark float-right btn-sm" id="submit">Submit</button>
+      <div class="row">
+        <div class="col-6">
+          <button type="button" class="btn btn-dark btn-sm btn-block" id="addArticle"><b>&#10018;</b> Create</button>
+        </div>
+        <div class="col-6">
+          <button type="button" class="btn btn-dark btn-sm btn-block" id="open">&#x1F50D; View</button>
+        </div>
       </div>
     </form>
   </div>

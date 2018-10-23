@@ -5,7 +5,7 @@ $(function () {
     var client = ZAFClient.init();
     client.invoke('resize', {
         width: '100%',
-        height: '50px'
+        height: '51px'
     });
 
     client.on('app.registered', init);

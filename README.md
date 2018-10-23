@@ -39,6 +39,7 @@ One of the best features of this app will be using the shortcut as a macro but b
 Please submit bug reports to [https://github.com/hexerve/autoDoc](https://github.com/hexerve/autoDoc). Pull requests are welcome.
 
 ### Screenshot(s):
-![create article](\assets\screenshot-1.png?raw=true "create article")
-![view articles](\assets\screenshot-0.png?raw=true "view articles")
-![main app](\assets\screenshot-2.png?raw=true "main app")
+
+![main app](https://raw.githubusercontent.com/JDchauhan/autoDoc/master/assets/screenshot-2.png "main app")
+![create article](https://raw.githubusercontent.com/JDchauhan/autoDoc/master/assets/screenshot-1.png "create article")
+![view articles](https://raw.githubusercontent.com/JDchauhan/autoDoc/master/assets/screenshot-0.png "view articles")

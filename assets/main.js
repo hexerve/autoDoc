@@ -4,8 +4,8 @@ var prevText = '', base_url;
 $(function () {
     var client = ZAFClient.init();
     client.invoke('resize', {
-        width: '100%',
-        height: '51px'
+        width: '93px',
+        height: '55px'
     });
 
     client.on('app.registered', init);

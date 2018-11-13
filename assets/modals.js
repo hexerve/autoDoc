@@ -1,10 +1,6 @@
 var srcType = 'all',
     pc, currentUser, autoCopy = true;
-
-var url = window.location.href;
-url = url.split('=');
-url = url[1].split('&');
-var base_url = decodeURIComponent(url[0]);
+var base_url;
 
 var getArticles;
 var appendArticles;
@@ -28,8 +24,12 @@ $(function () {
     function init() {
         client.get('currentUser').then(function (agent) {
             currentUser = agent.currentUser;
-            data = base_url + '/api/v2/help_center/users/' + currentUser.id + '/articles.json';
-            getArticles(data, 'my');
+            client.get('currentAccount.subdomain').then(function (res) {
+                base_url = 'https://' + res['currentAccount.subdomain'] + '.zendesk.com';
+
+                data = base_url + '/api/v2/help_center/users/' + currentUser.id + '/articles.json';
+                getArticles(data, 'my');
+            });
         });
         pc = getParentClient(getGuid(window.location.hash));
     }

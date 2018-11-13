@@ -1,9 +1,5 @@
 var currentUser, articleBody, getSections;
-
-var url = window.location.href;
-url = url.split('=');
-url = url[1].split('&');
-var base_url = decodeURIComponent(url[0]);
+var base_url;
 
 $(function () {
     var client = ZAFClient.init();
@@ -22,12 +18,15 @@ $(function () {
             $('#title').val(data['ticket.subject']);
         });
 
-        getSections(base_url + '/api/v2/help_center/sections.json');
+        client.get('currentAccount.subdomain').then(function (res) {
+            base_url = 'https://' + res['currentAccount.subdomain'] + '.zendesk.com';
 
-        setTimeout(function () {
-            $('.loader').addClass('hide');
-            $('#body-container').removeClass('hide');
-        }, 1000);
+            getSections(base_url + '/api/v2/help_center/sections.json');
+            setTimeout(function () {
+                $('.loader').addClass('hide');
+                $('#body-container').removeClass('hide');
+            }, 1000);
+        });
     }
 
     getSections = function (url) {

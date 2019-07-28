@@ -1,5 +1,7 @@
-var currentUser, articleBody, getSections;
+var currentUser, articleBody, getSections, getUserSegment, getPermissionGroup;
 var base_url;
+var userSegment = null
+var permissionGroup = null
 
 $(function () {
     var client = ZAFClient.init();
@@ -26,6 +28,9 @@ $(function () {
                 $('.loader').addClass('hide');
                 $('#body-container').removeClass('hide');
             }, 1000);
+
+            getUserSegment(base_url + '/api/v2/help_center/user_segments.json')
+            getPermissionGroup(base_url + '/api/v2/guide/permission_groups.json')
         });
     }
 
@@ -46,6 +51,43 @@ $(function () {
         });
     }
 
+    getUserSegment = function (url) {
+        var options = {
+            url: url,
+            type: 'GET',
+            contentType: "application/json",
+            cors: true
+        };
+        pc.request(options).then(function (response) {
+            response.user_segments.forEach(segment => {
+                if(segment.user_type === "signed_in_users"){
+                    userSegment = segment.id
+                }
+            });
+        });
+    }
+
+    
+    getPermissionGroup = function (url) {
+        var options = {
+            url: url,
+            type: 'GET',
+            contentType: "application/json",
+            cors: true
+        };
+        pc.request(options).then(function (response) {
+            console.log(response.permission_groups)
+                
+            response.permission_groups.forEach(group => {
+                console.log(group.name)
+                if(group.name === "Agents and Managers"){
+                    permissionGroup = group.id
+                }
+            });
+        });
+    }
+
+    
     function getGuid(paramString) {
         return paramString.split('=')[1];
     }
@@ -72,11 +114,35 @@ $(function () {
                 $('.alert').fadeOut(5000);
             }, 200);
             return;
+        }else if(userSegment === null || permissionGroup === undefined){
+            $('.alert').remove();
+            setTimeout(() => {
+                $('#modal-msg').append(
+                    '<div class="alert alert-small-right alert-sm alert-danger alert-dismissible fade show">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    'User Segment not found for signed in users!' +
+                    '</div>'
+                );
+                $('.alert').fadeOut(5000);
+            }, 200);
+            return;
+        }else if(permissionGroup === null){
+            $('.alert').remove();
+            setTimeout(() => {
+                $('#modal-msg').append(
+                    '<div class="alert alert-small-right alert-sm alert-danger alert-dismissible fade show">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    'Permission group not found!' +
+                    '</div>'
+                );
+                $('.alert').fadeOut(5000);
+            }, 200);
+            return;
         }
 
         var options = {
             url: base_url + '/api/v2/help_center/sections/' + sectionId + '/articles.json',
-            data: '{"article": {"title": "' + title + '", "body": "' + articleBody + '"}}',
+            data: '{"article": {"title": "' + title + '", "body": "' + articleBody + '", "draft": true, "user_segment_id": "' + userSegment + '", "permission_group_id": "' + permissionGroup + '"}}',
             type: 'POST',
             contentType: "application/json",
             cors: true
